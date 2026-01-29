@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Facebook, Instagram, Twitter, Youtube, Heart } from "lucide-react";
+import { Instagram, Heart, Linkedin, Mail, Phone } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -19,10 +19,10 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#", color: "hover:bg-sky" },
-    { icon: Instagram, href: "#", color: "hover:bg-candy" },
-    { icon: Twitter, href: "#", color: "hover:bg-sky" },
-    { icon: Youtube, href: "#", color: "hover:bg-destructive" },
+    { icon: Instagram, href: "https://www.instagram.com/", color: "hover:bg-candy", label: "Instagram" },
+    { icon: Linkedin, href: "https://www.linkedin.com/in/pruthvirajsinh-makwana-635974393/", color: "hover:bg-sky", label: "LinkedIn" },
+    { icon: Mail, href: "mailto:pruthvirajsinh.biz@gmail.com", color: "hover:bg-mint", label: "Email" },
+    { icon: Phone, href: "tel:+917016592727", color: "hover:bg-lavender", label: "Phone" },
   ];
 
   return (
@@ -41,13 +41,16 @@ const Footer = () => {
             </div>
             <p className="text-background/70 font-nunito text-sm mb-4">
               Where learning is fun, colorful, and creative! Nurturing young minds 
-              since 2014 with love and dedication.
+              since 2018 with love and dedication in Ahmedabad, Gujarat.
             </p>
             <div className="flex gap-2">
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
                   className={`w-10 h-10 rounded-full bg-background/10 flex items-center justify-center transition-colors ${social.color}`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

@@ -10,25 +10,25 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Address",
-    content: "123 Rainbow Street, Sunshine City, CA 90210",
+    content: "Near City Garden, Vastrapur, Ahmedabad, Gujarat 380015",
     color: "bg-candy/20 text-candy-dark",
   },
   {
     icon: Phone,
     title: "Phone",
-    content: "+1 (555) 123-4567",
+    content: "+91 7016592727",
     color: "bg-sky/20 text-sky-dark",
   },
   {
     icon: Mail,
     title: "Email",
-    content: "hello@rainbowkids.edu",
+    content: "pruthvirajsinh.biz@gmail.com",
     color: "bg-mint/20 text-mint-dark",
   },
   {
     icon: Clock,
     title: "Hours",
-    content: "Mon-Fri: 8:00 AM - 4:00 PM",
+    content: "Mon-Sat: 8:00 AM - 5:00 PM",
     color: "bg-lavender/20 text-lavender-dark",
   },
 ];
@@ -100,17 +100,17 @@ const ContactSection = () => {
               ))}
             </div>
 
-            {/* Map Placeholder */}
+            {/* Map - Ahmedabad Location */}
             <div className="rounded-3xl overflow-hidden h-64 bg-muted">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.7152203584424!2d-118.4085049!3d34.0522342!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDAzJzA4LjAiTiAxMTjCsDI0JzMwLjYiVw!5e0!3m2!1sen!2sus!4v1234567890"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.9024892925!2d72.5273852!3d23.0396541!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f6d7f4d4e9%3A0x8d5c1b8f0f8f8f8f!2sVastrapur%2C%20Ahmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1234567890"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Rainbow Kids Academy Location"
+                title="Rainbow Kids Academy Location - Ahmedabad"
               />
             </div>
           </motion.div>
@@ -134,7 +134,7 @@ const ContactSection = () => {
                   </label>
                   <Input
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Rahul Sharma"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     className="rounded-xl border-2 border-border focus:border-sky h-12 font-nunito"
@@ -148,7 +148,7 @@ const ContactSection = () => {
                   </label>
                   <Input
                     type="email"
-                    placeholder="john@example.com"
+                    placeholder="rahul@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="rounded-xl border-2 border-border focus:border-sky h-12 font-nunito"
@@ -162,7 +162,7 @@ const ContactSection = () => {
                   </label>
                   <Input
                     type="tel"
-                    placeholder="+1 (555) 123-4567"
+                    placeholder="+91 98765 43210"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="rounded-xl border-2 border-border focus:border-sky h-12 font-nunito"

@@ -5,23 +5,23 @@ import teacherEmma from "@/assets/teacher-emma.jpg";
 
 const teachers = [
   {
-    name: "Miss Lily Johnson",
+    name: "Mrs. Priya Sharma",
     role: "Art Teacher",
-    bio: "Passionate about nurturing creativity in young minds through colorful art projects.",
+    bio: "Passionate about nurturing creativity in young minds through colorful art projects and rangoli.",
     image: teacherLily,
     color: "from-candy to-candy-dark",
   },
   {
-    name: "Mr. Tom Brown",
+    name: "Mr. Vikram Patel",
     role: "Sports Coach",
-    bio: "Dedicated to helping children develop physical skills while having fun.",
+    bio: "Dedicated to helping children develop physical skills through yoga, cricket and fun games.",
     image: teacherTom,
     color: "from-mint to-mint-dark",
   },
   {
-    name: "Miss Emma Lee",
+    name: "Mrs. Anita Desai",
     role: "Storytelling Teacher",
-    bio: "Bringing magical stories to life and inspiring a love for reading.",
+    bio: "Bringing magical Indian folk tales to life and inspiring a love for reading.",
     image: teacherEmma,
     color: "from-lavender to-lavender-dark",
   },

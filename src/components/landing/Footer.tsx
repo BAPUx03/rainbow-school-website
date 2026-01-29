@@ -139,9 +139,17 @@ const Footer = () => {
             <p className="text-background/50 font-nunito text-sm text-center md:text-left">
               © {currentYear} Rainbow Kids Academy. All rights reserved.
             </p>
-            <p className="text-background/50 font-nunito text-sm flex items-center gap-1">
-              Made with <Heart className="w-4 h-4 text-candy fill-candy" /> for our little stars
-            </p>
+            <div className="flex items-center gap-4">
+              <a
+                href="/admin"
+                className="text-background/30 hover:text-background/50 font-nunito text-xs transition-colors"
+              >
+                Admin
+              </a>
+              <p className="text-background/50 font-nunito text-sm flex items-center gap-1">
+                Made with <Heart className="w-4 h-4 text-candy fill-candy" /> by Pruthvirajsinh Makwana
+              </p>
+            </div>
           </div>
         </div>
       </div>

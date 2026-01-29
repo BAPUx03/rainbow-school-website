@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { name: "Home", href: "#" },
@@ -16,7 +16,6 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
 
   const scrollToSection = (href: string) => {
     setIsOpen(false);
@@ -69,13 +68,6 @@ const Navbar = () => {
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate("/admin")}
-              className="font-fredoka"
-            >
-              Admin Login
-            </Button>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button className="btn-playful bg-gradient-rainbow text-primary-foreground rounded-full font-fredoka">
                 Enroll Now
@@ -115,16 +107,6 @@ const Navbar = () => {
                   </motion.button>
                 ))}
                 <div className="pt-4 space-y-2 px-4">
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setIsOpen(false);
-                      navigate("/admin");
-                    }}
-                    className="w-full font-fredoka rounded-xl"
-                  >
-                    Admin Login
-                  </Button>
                   <Button className="w-full btn-playful bg-gradient-rainbow text-primary-foreground rounded-xl font-fredoka">
                     Enroll Now
                   </Button>

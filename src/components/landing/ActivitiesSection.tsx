@@ -1,52 +1,43 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Palette, Music, BookOpen, Trophy, Cpu, Utensils } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-const activities = [
-  {
-    icon: Palette,
-    name: "Art & Craft",
-    description: "Express creativity through painting, drawing, and hands-on craft projects.",
-    emoji: "🎨",
-    color: "bg-candy",
-  },
-  {
-    icon: Music,
-    name: "Music & Dance",
-    description: "Explore rhythm, movement, and musical instruments in fun sessions.",
-    emoji: "🎵",
-    color: "bg-sky",
-  },
-  {
-    icon: BookOpen,
-    name: "Story Time",
-    description: "Magical storytelling sessions that spark imagination and language skills.",
-    emoji: "📖",
-    color: "bg-lavender",
-  },
-  {
-    icon: Trophy,
-    name: "Sports",
-    description: "Physical activities that develop coordination, teamwork, and fitness.",
-    emoji: "⚽",
-    color: "bg-mint",
-  },
-  {
-    icon: Cpu,
-    name: "Basic Robotics",
-    description: "Introduction to STEM concepts through fun robotics activities.",
-    emoji: "🤖",
-    color: "bg-sunshine",
-  },
-  {
-    icon: Utensils,
-    name: "Cooking Fun",
-    description: "Simple cooking activities that teach life skills and healthy eating.",
-    emoji: "🍳",
-    color: "bg-orange",
-  },
+interface Activity {
+  id: string;
+  name: string;
+  description: string | null;
+  emoji: string | null;
+  color_class: string | null;
+}
+
+const fallbackActivities = [
+  { id: "1", name: "Art & Craft", description: "Express creativity through painting, drawing, and hands-on craft projects.", emoji: "🎨", color_class: "bg-candy" },
+  { id: "2", name: "Music & Dance", description: "Explore rhythm, movement, and musical instruments in fun sessions.", emoji: "🎵", color_class: "bg-sky" },
+  { id: "3", name: "Story Time", description: "Magical storytelling sessions that spark imagination and language skills.", emoji: "📖", color_class: "bg-lavender" },
+  { id: "4", name: "Sports", description: "Physical activities that develop coordination, teamwork, and fitness.", emoji: "⚽", color_class: "bg-mint" },
+  { id: "5", name: "Basic Robotics", description: "Introduction to STEM concepts through fun robotics activities.", emoji: "🤖", color_class: "bg-sunshine" },
+  { id: "6", name: "Cooking Fun", description: "Simple cooking activities that teach life skills and healthy eating.", emoji: "🍳", color_class: "bg-orange" },
 ];
 
 const ActivitiesSection = () => {
+  const [activities, setActivities] = useState<Activity[]>(fallbackActivities);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      const { data, error } = await supabase
+        .from("activities")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order");
+
+      if (!error && data && data.length > 0) {
+        setActivities(data);
+      }
+    };
+
+    fetchActivities();
+  }, []);
+
   return (
     <section id="activities" className="section-padding bg-background">
       <div className="container mx-auto px-4">
@@ -74,7 +65,7 @@ const ActivitiesSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {activities.map((activity, index) => (
             <motion.div
-              key={index}
+              key={activity.id}
               className="card-playful group cursor-pointer"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -84,11 +75,11 @@ const ActivitiesSection = () => {
             >
               <div className="flex items-start gap-4">
                 <motion.div
-                  className={`w-14 h-14 rounded-2xl ${activity.color} flex items-center justify-center text-2xl flex-shrink-0`}
+                  className={`w-14 h-14 rounded-2xl ${activity.color_class || 'bg-candy'} flex items-center justify-center text-2xl flex-shrink-0`}
                   whileHover={{ scale: 1.2, rotate: 15 }}
                   transition={{ type: "spring", stiffness: 400 }}
                 >
-                  {activity.emoji}
+                  {activity.emoji || "🎨"}
                 </motion.div>
 
                 <div>

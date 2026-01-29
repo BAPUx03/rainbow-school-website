@@ -1,73 +1,76 @@
-# Welcome to your Lovable project
+# 🌈 Rainbow Kids Academy
 
-## Project info
+A modern, playful preschool website for Rainbow Kids Academy - Where Every Child Shines Bright!
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+![Rainbow Kids Academy](https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1200&h=400&fit=crop)
 
-## How can I edit this code?
+## 🔗 Live Demo
 
-There are several ways of editing your application.
+**[View Live Website →](https://id-preview--b335ff58-48f2-4d1f-8a0f-f51112aeadcc.lovable.app)**
 
-**Use Lovable**
+## ✨ Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- 🎨 **Beautiful, Child-Friendly Design** - Colorful and engaging UI with smooth animations
+- 📱 **Fully Responsive** - Works perfectly on desktop, tablet, and mobile devices
+- 📝 **Online Enrollment** - Parents can submit enrollment forms directly
+- 👩‍🏫 **Teacher Profiles** - Showcase your amazing teaching staff
+- 📚 **Class Programs** - Display all class levels (Play Group, Nursery, Jr. KG, Sr. KG)
+- 🎭 **Activities Section** - Highlight extracurricular activities
+- 📸 **Photo Gallery** - Beautiful lightbox gallery of school moments
+- 💬 **Parent Testimonials** - Carousel of parent reviews
+- 📍 **Contact Section** - Contact form with Google Maps integration
+- 🔐 **Admin Dashboard** - Full CMS to manage all website content
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🛠️ Admin CMS Features
 
-**Use your preferred IDE**
+- Manage enrollment submissions (approve/reject)
+- Update SEO settings and school information
+- Add/edit teacher profiles
+- Manage class programs
+- Update activities
+- Upload gallery photos
+- Manage testimonials
+- View contact form messages
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🚀 Technologies Used
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- **Frontend:** React, TypeScript, Tailwind CSS
+- **UI Components:** shadcn/ui, Framer Motion
+- **Backend:** Supabase (Database, Auth, Storage)
+- **Build Tool:** Vite
 
-Follow these steps:
+## 📞 Contact
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+**Pruthvirajsinh Makwana**
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- 📧 Email: [pruthvirajsinh.biz@gmail.com](mailto:pruthvirajsinh.biz@gmail.com)
+- 📱 Phone: [+91 7016592727](tel:+917016592727)
+- 💼 LinkedIn: [linkedin.com/in/pruthvirajsinh-makwana](https://linkedin.com/in/pruthvirajsinh-makwana)
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 💼 Want Your Own Website?
 
-**Edit a file directly in GitHub**
+Looking for a stunning, modern website for your school, business, or personal brand?
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Contact me for custom website development!**
 
-**Use GitHub Codespaces**
+📧 **Email:** [pruthvirajsinh.biz@gmail.com](mailto:pruthvirajsinh.biz@gmail.com)  
+📱 **WhatsApp:** [+91 7016592727](https://wa.me/917016592727)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+I specialize in:
+- 🏫 School & Educational Websites
+- 🏢 Business Websites
+- 🛒 E-commerce Solutions
+- 📱 Mobile-Responsive Design
+- ⚡ Fast & SEO-Optimized Websites
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 📄 License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+© 2024 Pruthvirajsinh Makwana. All rights reserved.
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Made with ❤️ by **Pruthvirajsinh Makwana**

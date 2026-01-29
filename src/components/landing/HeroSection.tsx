@@ -10,7 +10,11 @@ const floatingElements = [
   { icon: Sparkles, color: "text-lavender", delay: 1.5, x: "80%", y: "65%" },
 ];
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  onEnrollClick: () => void;
+}
+
+const HeroSection = ({ onEnrollClick }: HeroSectionProps) => {
   return (
     <section className="relative min-h-screen overflow-hidden bg-gradient-hero">
       {/* Floating Decorations */}
@@ -75,6 +79,7 @@ const HeroSection = () => {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   size="lg"
+                  onClick={onEnrollClick}
                   className="btn-playful bg-gradient-rainbow text-primary-foreground px-8 py-6 text-lg rounded-full"
                 >
                   <Sparkles className="mr-2 h-5 w-5" />

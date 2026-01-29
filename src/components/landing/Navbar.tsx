@@ -14,7 +14,11 @@ const navLinks = [
   { name: "Contact", href: "#contact" },
 ];
 
-const Navbar = () => {
+interface NavbarProps {
+  onEnrollClick: () => void;
+}
+
+const Navbar = ({ onEnrollClick }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const scrollToSection = (href: string) => {
@@ -69,7 +73,10 @@ const Navbar = () => {
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-4">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button className="btn-playful bg-gradient-rainbow text-primary-foreground rounded-full font-fredoka">
+              <Button 
+                onClick={onEnrollClick}
+                className="btn-playful bg-gradient-rainbow text-primary-foreground rounded-full font-fredoka"
+              >
                 Enroll Now
               </Button>
             </motion.div>
@@ -107,7 +114,13 @@ const Navbar = () => {
                   </motion.button>
                 ))}
                 <div className="pt-4 space-y-2 px-4">
-                  <Button className="w-full btn-playful bg-gradient-rainbow text-primary-foreground rounded-xl font-fredoka">
+                  <Button 
+                    onClick={() => {
+                      setIsOpen(false);
+                      onEnrollClick();
+                    }}
+                    className="w-full btn-playful bg-gradient-rainbow text-primary-foreground rounded-xl font-fredoka"
+                  >
                     Enroll Now
                   </Button>
                 </div>

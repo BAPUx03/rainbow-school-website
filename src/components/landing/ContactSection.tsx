@@ -1,37 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    title: "Address",
-    content: "Near City Garden, Vastrapur, Ahmedabad, Gujarat 380015",
-    color: "bg-candy/20 text-candy-dark",
-  },
-  {
-    icon: Phone,
-    title: "Phone",
-    content: "+91 7016592727",
-    color: "bg-sky/20 text-sky-dark",
-  },
-  {
-    icon: Mail,
-    title: "Email",
-    content: "pruthvirajsinh.biz@gmail.com",
-    color: "bg-mint/20 text-mint-dark",
-  },
-  {
-    icon: Clock,
-    title: "Hours",
-    content: "Mon-Sat: 8:00 AM - 5:00 PM",
-    color: "bg-lavender/20 text-lavender-dark",
-  },
-];
+interface ContactInfo {
+  address: string;
+  phone: string;
+  email: string;
+  hours: string;
+}
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -40,11 +21,85 @@ const ContactSection = () => {
     phone: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    address: "Near City Garden, Vastrapur, Ahmedabad, Gujarat 380015",
+    phone: "+91 7016592727",
+    email: "pruthvirajsinh.biz@gmail.com",
+    hours: "Mon-Sat: 8:00 AM - 5:00 PM",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("key, value")
+        .in("key", ["school_address", "school_phone", "school_email", "school_hours"]);
+
+      if (!error && data) {
+        const settings: Record<string, string> = {};
+        data.forEach((item) => {
+          settings[item.key] = item.value || "";
+        });
+        setContactInfo({
+          address: settings.school_address || contactInfo.address,
+          phone: settings.school_phone || contactInfo.phone,
+          email: settings.school_email || contactInfo.email,
+          hours: settings.school_hours || contactInfo.hours,
+        });
+      }
+    };
+
+    fetchContactInfo();
+  }, []);
+
+  const contactInfoItems = [
+    {
+      icon: MapPin,
+      title: "Address",
+      content: contactInfo.address,
+      color: "bg-candy/20 text-candy-dark",
+    },
+    {
+      icon: Phone,
+      title: "Phone",
+      content: contactInfo.phone,
+      color: "bg-sky/20 text-sky-dark",
+    },
+    {
+      icon: Mail,
+      title: "Email",
+      content: contactInfo.email,
+      color: "bg-mint/20 text-mint-dark",
+    },
+    {
+      icon: Clock,
+      title: "Hours",
+      content: contactInfo.hours,
+      color: "bg-lavender/20 text-lavender-dark",
+    },
+  ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you soon. 🌈");
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from("contact_messages")
+        .insert([formData]);
+
+      if (error) {
+        toast.error("Failed to send message. Please try again.");
+      } else {
+        toast.success("Message sent! We'll get back to you soon. 🌈");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -79,7 +134,7 @@ const ContactSection = () => {
             transition={{ duration: 0.6 }}
           >
             <div className="grid sm:grid-cols-2 gap-4 mb-8">
-              {contactInfo.map((info, index) => (
+              {contactInfoItems.map((info, index) => (
                 <motion.div
                   key={index}
                   className="card-playful flex items-start gap-4"
@@ -186,10 +241,11 @@ const ContactSection = () => {
                   <Button
                     type="submit"
                     size="lg"
+                    disabled={isSubmitting}
                     className="w-full btn-playful bg-gradient-rainbow text-primary-foreground h-14 text-lg rounded-2xl"
                   >
                     <Send className="mr-2 h-5 w-5" />
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </motion.div>
               </form>

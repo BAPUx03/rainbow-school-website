@@ -1,49 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
-// Using placeholder images for gallery - in a real app these would be uploaded
-const galleryItems = [
-  {
-    id: 1,
-    src: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&h=400&fit=crop",
-    alt: "Children painting in art class",
-    category: "Art",
-  },
-  {
-    id: 2,
-    src: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=400&fit=crop",
-    alt: "Kids playing in the playground",
-    category: "Play",
-  },
-  {
-    id: 3,
-    src: "https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&h=400&fit=crop",
-    alt: "Story time with teacher",
-    category: "Learning",
-  },
-  {
-    id: 4,
-    src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop",
-    alt: "Children doing crafts",
-    category: "Craft",
-  },
-  {
-    id: 5,
-    src: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=600&h=400&fit=crop",
-    alt: "Music class performance",
-    category: "Music",
-  },
-  {
-    id: 6,
-    src: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&h=400&fit=crop",
-    alt: "Outdoor activities",
-    category: "Sports",
-  },
+interface GalleryItem {
+  id: string;
+  image_url: string;
+  alt_text: string | null;
+  category: string | null;
+}
+
+const fallbackGalleryItems = [
+  { id: "1", image_url: "https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&h=400&fit=crop", alt_text: "Children painting in art class", category: "Art" },
+  { id: "2", image_url: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=400&fit=crop", alt_text: "Kids playing in the playground", category: "Play" },
+  { id: "3", image_url: "https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&h=400&fit=crop", alt_text: "Story time with teacher", category: "Learning" },
+  { id: "4", image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop", alt_text: "Children doing crafts", category: "Craft" },
+  { id: "5", image_url: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=600&h=400&fit=crop", alt_text: "Music class performance", category: "Music" },
+  { id: "6", image_url: "https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=600&h=400&fit=crop", alt_text: "Outdoor activities", category: "Sports" },
 ];
 
 const GallerySection = () => {
-  const [selectedImage, setSelectedImage] = useState<typeof galleryItems[0] | null>(null);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(fallbackGalleryItems);
+  const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      const { data, error } = await supabase
+        .from("gallery")
+        .select("*")
+        .eq("is_active", true)
+        .order("display_order");
+
+      if (!error && data && data.length > 0) {
+        setGalleryItems(data);
+      }
+    };
+
+    fetchGallery();
+  }, []);
 
   return (
     <section id="gallery" className="section-padding bg-background">
@@ -82,14 +76,14 @@ const GallerySection = () => {
               onClick={() => setSelectedImage(item)}
             >
               <img
-                src={item.src}
-                alt={item.alt}
+                src={item.image_url}
+                alt={item.alt_text || "Gallery image"}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-4 left-4">
                   <span className="px-3 py-1 rounded-full bg-background/80 text-foreground text-sm font-fredoka font-semibold">
-                    {item.category}
+                    {item.category || "Photo"}
                   </span>
                 </div>
               </div>
@@ -121,12 +115,12 @@ const GallerySection = () => {
                   <X className="w-6 h-6 text-background" />
                 </button>
                 <img
-                  src={selectedImage.src}
-                  alt={selectedImage.alt}
+                  src={selectedImage.image_url}
+                  alt={selectedImage.alt_text || "Gallery image"}
                   className="w-full rounded-2xl shadow-2xl"
                 />
                 <p className="text-center text-background font-fredoka mt-4">
-                  {selectedImage.alt}
+                  {selectedImage.alt_text}
                 </p>
               </motion.div>
             </motion.div>

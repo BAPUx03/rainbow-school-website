@@ -1,49 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Priya Patel",
-    role: "Parent of Aarav, Age 5",
-    content: "Rainbow Kids Academy has been a blessing for our family. Aarav has grown so much in confidence and loves going to school every day. The teachers are incredibly caring and creative!",
-    rating: 5,
-    avatar: "PP",
-    color: "bg-candy",
-  },
-  {
-    id: 2,
-    name: "Rajesh Sharma",
-    role: "Parent of Ananya, Age 4",
-    content: "The curriculum is perfect for young children - learning through play! Ananya comes home excited about what she learned each day. The communication with parents is excellent.",
-    rating: 5,
-    avatar: "RS",
-    color: "bg-sky",
-  },
-  {
-    id: 3,
-    name: "Meera Desai",
-    role: "Parent of Ishaan, Age 6",
-    content: "The best decision we made was enrolling Ishaan here. The facilities are wonderful, and the teachers go above and beyond. He's made great friends and loves all the activities!",
-    rating: 5,
-    avatar: "MD",
-    color: "bg-mint",
-  },
-  {
-    id: 4,
-    name: "Amit Mehta",
-    role: "Parent of Kavya, Age 3",
-    content: "As first-time parents, we were nervous about preschool, but Rainbow Kids made the transition so smooth. Kavya adapted quickly and the staff are amazing with the little ones.",
-    rating: 5,
-    avatar: "AM",
-    color: "bg-lavender",
-  },
+interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  content: string;
+  rating: number | null;
+  avatar_initials: string | null;
+  color_class: string | null;
+}
+
+const fallbackTestimonials = [
+  { id: "1", name: "Priya Patel", role: "Parent of Aarav, Age 5", content: "Rainbow Kids Academy has been a blessing for our family. Aarav has grown so much in confidence and loves going to school every day. The teachers are incredibly caring and creative!", rating: 5, avatar_initials: "PP", color_class: "bg-candy" },
+  { id: "2", name: "Rajesh Sharma", role: "Parent of Ananya, Age 4", content: "The curriculum is perfect for young children - learning through play! Ananya comes home excited about what she learned each day. The communication with parents is excellent.", rating: 5, avatar_initials: "RS", color_class: "bg-sky" },
+  { id: "3", name: "Meera Desai", role: "Parent of Ishaan, Age 6", content: "The best decision we made was enrolling Ishaan here. The facilities are wonderful, and the teachers go above and beyond. He's made great friends and loves all the activities!", rating: 5, avatar_initials: "MD", color_class: "bg-mint" },
+  { id: "4", name: "Amit Mehta", role: "Parent of Kavya, Age 3", content: "As first-time parents, we were nervous about preschool, but Rainbow Kids made the transition so smooth. Kavya adapted quickly and the staff are amazing with the little ones.", rating: 5, avatar_initials: "AM", color_class: "bg-lavender" },
 ];
 
 const TestimonialsSection = () => {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(fallbackTestimonials);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      const { data, error } = await supabase
+        .from("testimonials")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
+
+      if (!error && data && data.length > 0) {
+        setTestimonials(data);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
@@ -52,6 +48,8 @@ const TestimonialsSection = () => {
   const prev = () => {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
+
+  const currentTestimonial = testimonials[currentIndex];
 
   return (
     <section id="testimonials" className="section-padding bg-muted/50 overflow-hidden">
@@ -92,27 +90,27 @@ const TestimonialsSection = () => {
 
               {/* Content */}
               <p className="text-lg md:text-xl text-foreground font-nunito mb-8 italic leading-relaxed">
-                "{testimonials[currentIndex].content}"
+                "{currentTestimonial?.content}"
               </p>
 
               {/* Rating */}
               <div className="flex justify-center gap-1 mb-4">
-                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                {[...Array(currentTestimonial?.rating || 5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 text-sunshine fill-sunshine" />
                 ))}
               </div>
 
               {/* Author */}
               <div className="flex items-center justify-center gap-4">
-                <div className={`w-14 h-14 rounded-full ${testimonials[currentIndex].color} flex items-center justify-center text-primary-foreground font-fredoka font-bold text-lg`}>
-                  {testimonials[currentIndex].avatar}
+                <div className={`w-14 h-14 rounded-full ${currentTestimonial?.color_class || 'bg-candy'} flex items-center justify-center text-primary-foreground font-fredoka font-bold text-lg`}>
+                  {currentTestimonial?.avatar_initials}
                 </div>
                 <div className="text-left">
                   <h4 className="font-fredoka font-bold text-foreground">
-                    {testimonials[currentIndex].name}
+                    {currentTestimonial?.name}
                   </h4>
                   <p className="text-muted-foreground text-sm font-nunito">
-                    {testimonials[currentIndex].role}
+                    {currentTestimonial?.role}
                   </p>
                 </div>
               </div>

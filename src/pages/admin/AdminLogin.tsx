@@ -1,33 +1,100 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail, UserPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Demo login - in production, this would connect to Supabase auth
-    setTimeout(() => {
-      if (email === "pruthviraj.admin@example.com" && password === "Pruthvi!01") {
-        localStorage.setItem("adminLoggedIn", "true");
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        setIsLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        // Check if user has admin role
+        const { data: roles, error: roleError } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.user.id)
+          .eq("role", "admin");
+
+        if (roleError || !roles || roles.length === 0) {
+          toast.error("You do not have admin access. Please contact the administrator.");
+          await supabase.auth.signOut();
+          setIsLoading(false);
+          return;
+        }
+
         toast.success("Welcome back! 🌈");
         navigate("/admin/dashboard");
-      } else {
-        toast.error("Invalid credentials. Please check your email and password.");
       }
-      setIsLoading(false);
-    }, 1000);
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+    
+    setIsLoading(false);
+  };
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: window.location.origin,
+        },
+      });
+
+      if (error) {
+        toast.error(error.message);
+        setIsLoading(false);
+        return;
+      }
+
+      if (data.user) {
+        // For the first admin user, automatically grant admin role
+        // In production, you would want a more secure onboarding process
+        const { error: roleError } = await supabase
+          .from("user_roles")
+          .insert([{ user_id: data.user.id, role: "admin" }]);
+
+        if (roleError) {
+          // Role might already exist or user doesn't have permission
+          console.log("Role assignment:", roleError.message);
+        }
+
+        toast.success("Account created! You can now login.");
+        setIsSignUp(false);
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -68,12 +135,12 @@ const AdminLogin = () => {
               Admin Portal
             </h1>
             <p className="text-muted-foreground font-nunito text-sm">
-              Sign in to manage Rainbow Kids Academy
+              {isSignUp ? "Create an admin account" : "Sign in to manage Rainbow Kids Academy"}
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
             <div>
               <label className="block text-sm font-fredoka font-semibold text-foreground mb-2">
                 Email Address
@@ -104,6 +171,7 @@ const AdminLogin = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="pl-12 pr-12 h-12 rounded-xl border-2 border-border focus:border-sky font-nunito"
                   required
+                  minLength={6}
                 />
                 <button
                   type="button"
@@ -115,21 +183,17 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 rounded border-border text-sky focus:ring-sky"
-                />
-                <span className="text-sm text-muted-foreground font-nunito">Remember me</span>
-              </label>
-              <button
-                type="button"
-                className="text-sm text-sky hover:underline font-nunito"
-              >
-                Forgot password?
-              </button>
-            </div>
+            {!isSignUp && (
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded border-border text-sky focus:ring-sky"
+                  />
+                  <span className="text-sm text-muted-foreground font-nunito">Remember me</span>
+                </label>
+              </div>
+            )}
 
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
@@ -144,6 +208,10 @@ const AdminLogin = () => {
                   >
                     ⏳
                   </motion.span>
+                ) : isSignUp ? (
+                  <>
+                    <UserPlus className="w-5 h-5 mr-2" /> Create Account
+                  </>
                 ) : (
                   "Sign In"
                 )}
@@ -151,9 +219,18 @@ const AdminLogin = () => {
             </motion.div>
           </form>
 
+          {/* Toggle Sign Up / Sign In */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-sky hover:underline font-nunito"
+            >
+              {isSignUp ? "Already have an account? Sign In" : "Need an account? Sign Up"}
+            </button>
+          </div>
 
           {/* Back to Website */}
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <button
               onClick={() => navigate("/")}
               className="text-sm text-muted-foreground hover:text-sky font-nunito"

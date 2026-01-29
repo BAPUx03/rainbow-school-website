@@ -72,8 +72,7 @@ const CTASection = ({ onEnrollClick }: CTASectionProps) => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 size="lg"
-                variant="outline"
-                className="border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 px-8 py-6 text-lg rounded-full font-fredoka"
+                className="bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white/30 px-8 py-6 text-lg rounded-full font-fredoka shadow-lg"
                 onClick={() => window.open("tel:+917016592727")}
               >
                 <Phone className="mr-2 h-5 w-5" />

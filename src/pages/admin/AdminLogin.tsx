@@ -19,12 +19,12 @@ const AdminLogin = () => {
 
     // Demo login - in production, this would connect to Supabase auth
     setTimeout(() => {
-      if (email === "admin@rainbowkids.edu" && password === "admin123") {
+      if (email === "pruthviraj.admin@example.com" && password === "Pruthvi!01") {
         localStorage.setItem("adminLoggedIn", "true");
         toast.success("Welcome back! 🌈");
         navigate("/admin/dashboard");
       } else {
-        toast.error("Invalid credentials. Try: admin@rainbowkids.edu / admin123");
+        toast.error("Invalid credentials. Please check your email and password.");
       }
       setIsLoading(false);
     }, 1000);
@@ -151,12 +151,6 @@ const AdminLogin = () => {
             </motion.div>
           </form>
 
-          {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-sky/10 rounded-xl">
-            <p className="text-sm text-center font-nunito text-muted-foreground">
-              <span className="font-semibold">Demo:</span> admin@rainbowkids.edu / admin123
-            </p>
-          </div>
 
           {/* Back to Website */}
           <div className="mt-6 text-center">

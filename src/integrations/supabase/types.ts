@@ -14,7 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      enrollments: {
+        Row: {
+          child_name: string
+          class_type: string
+          created_at: string
+          date_of_birth: string
+          email: string
+          id: string
+          parent_name: string
+          phone: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          child_name: string
+          class_type: string
+          created_at?: string
+          date_of_birth: string
+          email: string
+          id?: string
+          parent_name: string
+          phone: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          child_name?: string
+          class_type?: string
+          created_at?: string
+          date_of_birth?: string
+          email?: string
+          id?: string
+          parent_name?: string
+          phone?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

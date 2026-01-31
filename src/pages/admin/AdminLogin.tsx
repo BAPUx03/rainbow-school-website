@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Lock, Mail, UserPlus } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,6 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -40,55 +39,14 @@ const AdminLogin = () => {
           .eq("role", "admin");
 
         if (roleError || !roles || roles.length === 0) {
-          toast.error("You do not have admin access. Please contact the administrator.");
+          toast.error("You do not have admin access.");
           await supabase.auth.signOut();
           setIsLoading(false);
           return;
         }
 
-        toast.success("Welcome back! 🌈");
+        toast.success("Welcome back, Admin! 🌈");
         navigate("/admin/dashboard");
-      }
-    } catch (error) {
-      toast.error("An error occurred. Please try again.");
-    }
-    
-    setIsLoading(false);
-  };
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin,
-        },
-      });
-
-      if (error) {
-        toast.error(error.message);
-        setIsLoading(false);
-        return;
-      }
-
-      if (data.user) {
-        // For the first admin user, automatically grant admin role
-        // In production, you would want a more secure onboarding process
-        const { error: roleError } = await supabase
-          .from("user_roles")
-          .insert([{ user_id: data.user.id, role: "admin" }]);
-
-        if (roleError) {
-          // Role might already exist or user doesn't have permission
-          console.log("Role assignment:", roleError.message);
-        }
-
-        toast.success("Account created! You can now login.");
-        setIsSignUp(false);
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -135,12 +93,12 @@ const AdminLogin = () => {
               Admin Portal
             </h1>
             <p className="text-muted-foreground font-nunito text-sm">
-              {isSignUp ? "Create an admin account" : "Sign in to manage Rainbow Kids Academy"}
+              Sign in to manage Rainbow Kids Academy
             </p>
           </div>
 
           {/* Form */}
-          <form onSubmit={isSignUp ? handleSignUp : handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-sm font-fredoka font-semibold text-foreground mb-2">
                 Email Address
@@ -183,18 +141,6 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            {!isSignUp && (
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-border text-sky focus:ring-sky"
-                  />
-                  <span className="text-sm text-muted-foreground font-nunito">Remember me</span>
-                </label>
-              </div>
-            )}
-
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
               <Button
                 type="submit"
@@ -208,10 +154,6 @@ const AdminLogin = () => {
                   >
                     ⏳
                   </motion.span>
-                ) : isSignUp ? (
-                  <>
-                    <UserPlus className="w-5 h-5 mr-2" /> Create Account
-                  </>
                 ) : (
                   "Sign In"
                 )}
@@ -219,18 +161,8 @@ const AdminLogin = () => {
             </motion.div>
           </form>
 
-          {/* Toggle Sign Up / Sign In */}
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-sky hover:underline font-nunito"
-            >
-              {isSignUp ? "Already have an account? Sign In" : "Need an account? Sign Up"}
-            </button>
-          </div>
-
           {/* Back to Website */}
-          <div className="mt-4 text-center">
+          <div className="mt-6 text-center">
             <button
               onClick={() => navigate("/")}
               className="text-sm text-muted-foreground hover:text-sky font-nunito"

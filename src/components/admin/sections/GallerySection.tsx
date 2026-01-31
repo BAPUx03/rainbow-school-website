@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 interface GalleryItem {
   id: string;
@@ -214,25 +215,13 @@ const GallerySection = () => {
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label>Image URL *</Label>
-              <Input
+              <Label>Image *</Label>
+              <ImageUpload
                 value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                placeholder="https://example.com/image.jpg"
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                folder="gallery"
               />
             </div>
-            {formData.image_url && (
-              <div className="rounded-lg overflow-hidden aspect-video">
-                <img
-                  src={formData.image_url}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = "/placeholder.svg";
-                  }}
-                />
-              </div>
-            )}
             <div>
               <Label>Alt Text (for accessibility)</Label>
               <Input

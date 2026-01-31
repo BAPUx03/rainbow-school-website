@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import ImageUpload from "@/components/admin/ImageUpload";
 
 interface Teacher {
   id: string;
@@ -240,11 +241,11 @@ const TeachersSection = () => {
               />
             </div>
             <div>
-              <Label>Image URL</Label>
-              <Input
+              <Label>Photo</Label>
+              <ImageUpload
                 value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                placeholder="https://example.com/photo.jpg"
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                folder="teachers"
               />
             </div>
             <div>

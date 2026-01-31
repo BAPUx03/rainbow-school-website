@@ -11,6 +11,7 @@ import CTASection from "@/components/landing/CTASection";
 import ContactSection from "@/components/landing/ContactSection";
 import Footer from "@/components/landing/Footer";
 import EnrollmentModal from "@/components/landing/EnrollmentModal";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 const Index = () => {
   const [isEnrollmentOpen, setIsEnrollmentOpen] = useState(false);
@@ -32,6 +33,7 @@ const Index = () => {
         isOpen={isEnrollmentOpen} 
         onClose={() => setIsEnrollmentOpen(false)} 
       />
+      <FloatingWhatsApp />
     </div>
   );
 };

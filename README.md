@@ -6,7 +6,7 @@ A modern, playful preschool website for Rainbow Kids Academy - Where Every Child
 
 ## 🔗 Live Demo
 
-**[View Live Website →]([https://id-preview--b335ff58-48f2-4d1f-8a0f-f51112aeadcc.lovable.app](https://majestic-unicorn-83be01.netlify.app/))**
+**[View Live Website →](https://majestic-unicorn-83be01.netlify.app/)**
 
 ## ✨ Features
 
